@@ -6,7 +6,6 @@ Each entry includes the question, examples, constraints, approach, code, and com
 
 ---
 
-# Day 1 — Question 1
 
 ## LeetCode 453. Minimum Moves to Equal Array Elements
 
@@ -95,7 +94,6 @@ When an operation changes all elements except one, consider whether it can be re
 
 ---
 
-# Day 2 — Question 2
 
 ## LeetCode 462. Minimum Moves to Equal Array Elements II
 
