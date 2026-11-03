@@ -1,169 +1,108 @@
 # LeetCode Solutions
 
-My daily LeetCode practice, with complete problem statements and Python 3 solutions documented directly on this page.
-
-Each entry includes the question, examples, constraints, approach, code, and complexity analysis. Everything is visible on this repository's homepage.
+Daily LeetCode problem statements and Python 3 solutions, organized by day.
 
 ---
 
+## Day 3 — 3736. Minimum Moves to Equal Array Elements III
 
-## LeetCode 453. Minimum Moves to Equal Array Elements
-
-**Difficulty:** Medium  
-**Language:** Python 3
+**Difficulty:** Easy  
+**Language:** Python 3  
+**Status:** Solved
 
 ### Question
 
-Given an integer array `nums` of size `n`, return the minimum number of moves required to make all array elements equal.
+You are given an integer array `nums`.
 
-In one move, you can increment `n - 1` elements of the array by `1`.
+In one move, you may increase the value of any single element `nums[i]` by 1.
 
-### Example 1
+Return the minimum total number of moves required so that all elements in `nums` become equal.
 
-**Input:**
-```text
-nums = [1, 2, 3]
-```
+### Examples
 
-**Output:**
-```text
-3
-```
+**Example 1:**
+- Input: `nums = [2,1,3]`
+- Output: `3`
+- Explanation:
+  - Increase `nums[0]` from 2 to 3.
+  - Increase `nums[1]` from 1 to 2.
+  - Increase `nums[1]` from 2 to 3.
+  - All elements are now equal to 3.
 
-**Explanation:**
-
-Only three moves are needed (each move increments two elements):
-
-```text
-[1, 2, 3]
-[2, 3, 3]
-[3, 4, 3]
-[4, 4, 4]
-```
-
-### Example 2
-
-**Input:**
-```text
-nums = [1, 1, 1]
-```
-
-**Output:**
-```text
-0
-```
+**Example 2:**
+- Input: `nums = [4,4,5]`
+- Output: `2`
+- Explanation:
+  - Increase `nums[0]` from 4 to 5.
+  - Increase `nums[1]` from 4 to 5.
+  - All elements are now equal to 5.
 
 ### Constraints
 
-- `n == nums.length`
-- `1 <= nums.length <= 10^5`
-- `-10^9 <= nums[i] <= 10^9`
-- The answer is guaranteed to fit in a 32-bit integer.
+- `1 <= nums.length <= 100`
+- `1 <= nums[i] <= 100`
 
-### Approach: Mathematical Observation
+### Approach
 
-Incrementing `n - 1` elements by `1` is equivalent, in terms of relative differences, to decrementing the remaining element by `1`.
-
-So we can think of reducing every element to the minimum value in the array.
-
-If `m` is the minimum value:
-
-```text
-Minimum moves = sum(nums) - (m * len(nums))
-```
+Because we can only increase elements, the smallest possible common target is the maximum value already present in the array. For each element, calculate `max(nums) - num` and add these differences.
 
 ### Python 3 Solution
 
 ```python
-from typing import List
-
-
 class Solution:
     def minMoves(self, nums: List[int]) -> int:
-        return sum(nums) - min(nums) * len(nums)
+        max_num = max(nums)
+        moves = 0
+
+        for num in nums:
+            moves += max_num - num
+
+        return moves
 ```
 
 ### Complexity Analysis
 
-- **Time Complexity:** `O(n)` — finding the minimum and calculating the sum each take linear time.
-- **Space Complexity:** `O(1)` auxiliary space.
-
-### Key Takeaway
-
-When an operation changes all elements except one, consider whether it can be reframed as changing just the excluded element in the opposite direction. This can turn a simulation problem into a mathematical formula.
+- **Time Complexity:** `O(n)` — finding the maximum and traversing the array each take linear time.
+- **Space Complexity:** `O(1)` — only a constant amount of extra space is used.
 
 ---
 
-
-## LeetCode 462. Minimum Moves to Equal Array Elements II
+## Day 2 — 462. Minimum Moves to Equal Array Elements II
 
 **Difficulty:** Medium  
-**Language:** Python 3
+**Language:** Python 3  
+**Status:** Solved
 
 ### Question
 
 Given an integer array `nums` of size `n`, return the minimum number of moves required to make all array elements equal.
 
-In one move, you can increment or decrement an element of the array by `1`.
+In one move, you can increment or decrement an element by 1.
 
-Test cases are designed so that the answer will fit in a 32-bit integer.
+### Examples
 
-### Example 1
+**Example 1:**
+- Input: `nums = [1,2,3]`
+- Output: `2`
+- Explanation: Decrease 3 to 2 and increase 1 to 2.
 
-**Input:**
-```text
-nums = [1, 2, 3]
-```
-
-**Output:**
-```text
-2
-```
-
-**Explanation:**
-
-Only two moves are needed (each move increments or decrements one element):
-
-```text
-[1, 2, 3]
-[2, 2, 3]
-[2, 2, 2]
-```
-
-### Example 2
-
-**Input:**
-```text
-nums = [1, 10, 2, 9]
-```
-
-**Output:**
-```text
-16
-```
+**Example 2:**
+- Input: `nums = [1,10,2,9]`
+- Output: `16`
 
 ### Constraints
 
-- `n == nums.length`
 - `1 <= nums.length <= 10^5`
 - `-10^9 <= nums[i] <= 10^9`
+- The answer is guaranteed to fit in a 32-bit integer.
 
-### Approach: Sorting and Median
+### Approach
 
-The key observation is that the **median** minimizes the sum of absolute differences between all array elements and a chosen target.
-
-1. Sort the array.
-2. Select the middle element as the median.
-3. Calculate the sum of the absolute differences between each element and the median.
-
-For an even-sized array, either middle element is a valid median and gives the same minimum number of moves. This solution chooses `nums[len(nums) // 2]`.
+The median minimizes the sum of absolute differences between all elements and a chosen target. Sort the array, select the middle element, and add the absolute difference between every element and the median.
 
 ### Python 3 Solution
 
 ```python
-from typing import List
-
-
 class Solution:
     def minMoves2(self, nums: List[int]) -> int:
         nums.sort()
@@ -178,13 +117,59 @@ class Solution:
 
 ### Complexity Analysis
 
-- **Time Complexity:** `O(n log n)` — sorting takes `O(n log n)`, and calculating the moves takes `O(n)`.
-- **Space Complexity:** `O(1)` auxiliary space for the move calculation; Python's in-place sorting may use additional implementation-dependent memory.
-
-### Key Takeaway
-
-For minimizing the sum of absolute distances to a single target, use the median. This is different from minimizing the sum of squared distances, where the mean is the natural target.
+- **Time Complexity:** `O(n log n)` — sorting dominates the traversal.
+- **Space Complexity:** Python's in-place sorting may use additional temporary memory.
 
 ---
 
-*More daily solutions will be added below this line.*
+## Day 1 — 453. Minimum Moves to Equal Array Elements
+
+**Difficulty:** Medium  
+**Language:** Python 3  
+**Status:** Solved
+
+### Question
+
+Given an integer array `nums` of size `n`, return the minimum number of moves required to make all array elements equal.
+
+In one move, you can increment `n - 1` elements by 1.
+
+### Examples
+
+**Example 1:**
+- Input: `nums = [1,2,3]`
+- Output: `3`
+- Explanation: `[1,2,3]` becomes `[2,3,3]`, then `[3,4,3]`, then `[4,4,4]`.
+
+**Example 2:**
+- Input: `nums = [1,1,1]`
+- Output: `0`
+
+### Constraints
+
+- `1 <= nums.length <= 10^5`
+- `-10^9 <= nums[i] <= 10^9`
+- The answer is guaranteed to fit in a 32-bit integer.
+
+### Approach
+
+Incrementing `n - 1` elements by 1 has the same effect on relative differences as decrementing the one element left unchanged. Therefore, the optimal strategy is equivalent to reducing every element to the minimum value.
+
+The number of moves is `sum(nums) - min(nums) * len(nums)`.
+
+### Python 3 Solution
+
+```python
+class Solution:
+    def minMoves(self, nums: List[int]) -> int:
+        return sum(nums) - min(nums) * len(nums)
+```
+
+### Complexity Analysis
+
+- **Time Complexity:** `O(n)` — calculating the sum and minimum requires linear time.
+- **Space Complexity:** `O(1)` — only constant extra space is used.
+
+---
+
+*Keep practicing. Add a new day whenever you solve another problem!*
